@@ -1,11 +1,22 @@
+hawpaw update at 28-10-2014
+________________________________________________________________________________________________-
+-Menu: Added option in settings "Date Format" to select US or EU setup
+	EU: 	Weeks start on Monday in calendar
+		Date order Day-Month-Year
+	US:	Weeks start on Sunday
+		Date order Month-Day-Year
+
 -Digital watch face modifications:
-	Data format
-	Add seconds in the bigges one
+	-Add seconds in the bigges one
+	-Increased some font sizes
 
 -Workout
 	-Increase font size
 	-Pause/Resume/stop function
-	P) Working background for other menues
+	-Workout continue in background when you are navigating for other menus.
 
--Watch Calendar
-	P) to be called from bottom button in any watch face 
+-Calendar
+	- Fixed days months,and missing December
+	- Deleted lines to achieve a clear view
+	- It can be called from watch face pressing down left button
+	- P) week of year (pending)
