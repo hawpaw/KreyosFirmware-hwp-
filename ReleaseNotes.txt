@@ -1,0 +1,11 @@
+-Digital watch face modifications:
+	Data format
+	Add seconds in the bigges one
+
+-Workout
+	-Increase font size
+	-Pause/Resume/stop function
+	P) Working background for other menues
+
+-Watch Calendar
+	P) to be called from bottom button in any watch face 
