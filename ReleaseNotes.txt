@@ -20,3 +20,6 @@ ________________________________________________________________________________
 	- Deleted lines to achieve a clear view
 	- It can be called from watch face pressing down left button
 	- P) week of year (pending)
+
+-Wellcome  screen
+	- The Exit button (top left) unlocks the watch without any phone connection.

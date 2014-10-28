@@ -102,12 +102,15 @@ uint8_t welcome_process(uint8_t ev, uint16_t lparam, void* rparam)
 		  }
 
     case EVENT_EXIT_PRESSED:
+    	system_unlock();		// to unlock with missing phone after a reboot.
+    	window_invalid(NULL);
     break;
 
 		case EVENT_KEY_PRESSED:
     {
       switch(lparam)
       {
+
         case KEY_ENTER:
         if (state == 0)
         {

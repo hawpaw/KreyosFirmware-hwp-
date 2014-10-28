@@ -5,7 +5,7 @@
 #include "memlcd.h"
 
 #include "grlib/grlib.h"
-
+//
 uint8_t state = 0;
 uint8_t charging_process(uint8_t ev, uint16_t lparam, void* rparam)
 {
