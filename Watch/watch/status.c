@@ -36,7 +36,7 @@ extern void ped_reset();
 #define BATTERY_FULL  3
 #define BATTERY_CHARGING 4
 
-static uint16_t status;
+uint16_t status;   // hawpaw era static
 static char alarmtext[10]; // 12:34 67
 
 extern void adjustAMPM(uint8_t hour, uint8_t *outhour, uint8_t *ispm);
@@ -188,7 +188,7 @@ static void OnDraw(tContext* pContext)
   4.2 => 2.1 / 2.5 * 255 = 214
   3.7 => 1.86 / 2.5 * 255 = 189
 */
-static void check_battery()
+ void check_battery()   //hawpaw era static
 {
   //uint8_t report = 0;
   // update battery status
@@ -216,7 +216,7 @@ static void check_battery()
   {
     if ((level == 0) && (state == BATTERY_STATE_DISCHARGING))
     {
-      window_open(&charging_process, 0);
+      //window_open(&charging_process, 0);   hawpaw
     }
   }
 

@@ -7,6 +7,14 @@
 #include <string.h>
 #include "memory.h"
 #include "memlcd.h"
+#include "icons.h"
+
+#define BATTERY_EMPTY 0
+#define BATTERY_LESS  1
+#define BATTERY_MORE  2
+#define BATTERY_FULL  3
+#define BATTERY_CHARGING 4
+
 /*
 * This implement the digit watch
 * Wake up every 1 second and update the watch
@@ -25,14 +33,56 @@
 static uint8_t selection;
 
 extern uint8_t disable_key;
+extern uint16_t status;
+extern void check_battery();
+
 
 typedef void (*draw_function)(tContext *pContext);
+static void drawTopIcons (tContext* pContext)
+{
+	check_battery();
+		GrContextForegroundSet(pContext, ClrWhite);
+		//GrLineDrawH(pContext, 0, LCD_WIDTH, 16);
+		GrContextFontSet(pContext, (tFont*)&g_sFontExIcon16);
+	    char icon;
 
+
+	    switch(status & 0x03)
+	    {
+	      case BATTERY_EMPTY:
+	        icon = ICON_BATTERY_EMPTY;
+	        break;
+	      case BATTERY_LESS:
+	        icon = ICON_BATTERY_LESS;
+	        break;
+	      case BATTERY_MORE:
+	        icon = ICON_BATTERY_MORE;
+	        break;
+	      case BATTERY_FULL:
+	        icon = ICON_BATTERY_FULL;
+	        break;
+	      default:
+	        icon = 0;
+	    }
+
+	    if (status & BATTERY_CHARGING)
+	    {
+	     // GrStringDraw(pContext, &icon, 1, 120, 0, 0);
+	     // icon = ICON_CHARGING;
+	      //GrStringDraw(pContext, &icon, 1, 137, 0, 0);
+	    }
+	    else
+	    {
+	      GrStringDraw(pContext, &icon, 1, 127, 0, 0);
+	    }
+
+}
 static void drawFace0(tContext *pContext)
 {
   int cos_val, sin_val;
   int sx, sy, ex, ey;
 
+  drawTopIcons(pContext);
   for(int angle = 0; angle < 359; angle +=30)
   {
     cordic_sincos(angle, 13, &sin_val, &cos_val);
@@ -51,6 +101,7 @@ static void drawFace3(tContext *pContext)
   int cos_val, sin_val;
   int sx, sy, ex, ey;
 
+  drawTopIcons(pContext);
   for(int angle = 0; angle < 359; angle += 6)
   {
     cordic_sincos(angle, 13, &sin_val, &cos_val);
@@ -75,6 +126,8 @@ static void drawFace6(tContext *pContext)
 {
   int cos_val, sin_val;
   int x, y;
+
+  drawTopIcons(pContext);
   GrCircleDraw(pContext, CENTER_X, CENTER_Y, 65);
   GrCircleDraw(pContext, CENTER_X, CENTER_Y, 66);
 
@@ -101,6 +154,8 @@ static void drawFace7(tContext *pContext)
 {
   int cos_val, sin_val;
   int x, y;
+  drawTopIcons(pContext);
+
   GrCircleDraw(pContext, CENTER_X, CENTER_Y, 62);
   GrCircleDraw(pContext, CENTER_X, CENTER_Y, 63);
 
@@ -118,7 +173,7 @@ static void drawFace4(tContext *pContext)
 {
   int cos_val, sin_val;
   int sx, sy, ex, ey;
-
+  drawTopIcons(pContext);
   for(int angle = 0; angle < 359; angle += 6)
   {
     cordic_sincos(angle, 13, &sin_val, &cos_val);
@@ -143,7 +198,7 @@ static void drawFace1(tContext *pContext)
 {
   int cos_val, sin_val;
   int x, y;
-
+  drawTopIcons(pContext);
   for(int angle = 0; angle < 359; angle += 6)
   {
     cordic_sincos(angle, 13, &sin_val, &cos_val);
@@ -165,7 +220,7 @@ static void drawFace5(tContext *pContext)
 {
   int cos_val, sin_val;
   int x, y;
-
+  drawTopIcons(pContext);
   GrContextFontSet(pContext, &g_sFontNimbus30);
 
   for(int angle = 60; angle <= 360; angle += 60)

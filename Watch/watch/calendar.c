@@ -13,17 +13,16 @@ uint16_t year, now_year;
 int getWeek() {
     time_t rawtime;
     struct tm * timeinfo;
-    char buffer[2];
+    char buffer[4];
 
     time (&rawtime);
     timeinfo = localtime(&rawtime); //
-    timeinfo = localtime(&rawtime);
-    timeinfo = localtime(&rawtime);
+
 
    // strftime(buffer,2,"%x - %I:%M%p", timeinfo);
   //  printf("Formatted date & time : |%s|\n", buffer );
 
-    strftime (buffer,2,"%W",timeinfo);   // '%W' = week number of the year, eg 1/1/09 == 1
+    strftime (buffer,4,"%W",timeinfo);   // '%W' = week number of the year, eg 1/1/09 == 1
   //  printf("Dins de funcio, bufffer=%s\n",buffer);
 
     return(atoi(buffer));     // convert char to int
@@ -138,11 +137,12 @@ static void OnDraw(tContext *pContext)
     sprintf(buf, "%s %d", toMonthName(month + 1, 0), year);
  // window_button(pContext, KEY_DOWN, buf);
 
-  //today_week=getWeek();
- // sprintf(buf, "week: %i",today_week);
+  today_week=getWeek();
+
+  sprintf(buf, " %s","");
 
 
- // printf("week: %i",today_week);
+  printf("week: %i",today_week);
 
 
   GrContextFontSet(pContext, &g_sFontGothic18);

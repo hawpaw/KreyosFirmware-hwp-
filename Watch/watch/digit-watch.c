@@ -7,9 +7,16 @@
 #include "memlcd.h"
 #include "memory.h"
 #include <time.h>
+#include "icons.h"
 
 #include <stdio.h> // for sprintf
 #include <string.h>
+
+#define BATTERY_EMPTY 0
+#define BATTERY_LESS  1
+#define BATTERY_MORE  2
+#define BATTERY_FULL  3
+#define BATTERY_CHARGING 4
 
 #define _hour0 d.digit.hour0
 #define _minute d.digit.minute
@@ -18,6 +25,8 @@ static uint8_t _selection;
 uint8_t _weekday;
 
 extern uint8_t disable_key;
+extern uint16_t status;
+extern void check_battery();
 
 typedef void (*draw_function)(tContext *pContext);
 
@@ -38,6 +47,45 @@ void adjustAMPM(uint8_t hour, uint8_t *outhour, uint8_t *ispm)
   }
 }
 
+ static void drawTopIcons (tContext* pContext)
+{
+	check_battery();
+		GrContextForegroundSet(pContext, ClrWhite);
+		//GrLineDrawH(pContext, 0, LCD_WIDTH, 16);
+		GrContextFontSet(pContext, (tFont*)&g_sFontExIcon16);
+	    char icon;
+
+
+	    switch(status & 0x03)
+	    {
+	      case BATTERY_EMPTY:
+	        icon = ICON_BATTERY_EMPTY;
+	        break;
+	      case BATTERY_LESS:
+	        icon = ICON_BATTERY_LESS;
+	        break;
+	      case BATTERY_MORE:
+	        icon = ICON_BATTERY_MORE;
+	        break;
+	      case BATTERY_FULL:
+	        icon = ICON_BATTERY_FULL;
+	        break;
+	      default:
+	        icon = 0;
+	    }
+
+	    if (status & BATTERY_CHARGING)
+	    {
+	     // GrStringDraw(pContext, &icon, 1, 120, 0, 0);
+	     // icon = ICON_CHARGING;
+	      //GrStringDraw(pContext, &icon, 1, 137, 0, 0);
+	    }
+	    else
+	    {
+	      GrStringDraw(pContext, &icon, 1, 127, 0, 0);
+	    }
+
+}
 static void drawClock0(tContext *pContext)
 {
   uint16_t year;
@@ -45,6 +93,8 @@ static void drawClock0(tContext *pContext)
   uint8_t month, day;
   uint8_t ispm = 0;
   char buf[20];
+
+  drawTopIcons(pContext);
 
   rtc_readdate(&year, &month, &day, NULL);
 
@@ -76,6 +126,7 @@ static void drawClock1(tContext *pContext)
   uint8_t hour = _hour0;
   char buf[20];
 
+  drawTopIcons(pContext);
   // draw time
   adjustAMPM(hour, &hour, &ispm);
 
@@ -102,6 +153,7 @@ static void drawClock2(tContext *pContext)
   char buf[20];
   const char* buffer;
 
+  drawTopIcons(pContext);
   // draw time
   adjustAMPM(hour, &hour, &ispm);
 
@@ -131,6 +183,7 @@ static void drawClock3(tContext *pContext)
   char buf[20];
   const char* buffer;
 
+  drawTopIcons(pContext);
   // draw time
   adjustAMPM(hour, &hour, &ispm);
 
@@ -173,7 +226,7 @@ static void drawClock4(tContext *pContext)
   uint8_t hour = _hour0;
   uint8_t month, day;
   char buf[20];
-
+  drawTopIcons(pContext);
   rtc_readdate(&year, &month, &day, NULL);
 
   GrContextFontSet(pContext, (tFont*)&g_sFontExNimbus50);
@@ -212,7 +265,7 @@ static void drawClock5(tContext *pContext)
   uint8_t month, day;
   uint8_t ispm = 0;
   char buf[20];
-
+  drawTopIcons(pContext);
   rtc_readdate(&year, &month, &day, NULL);
 
   // draw time
@@ -259,7 +312,7 @@ static void drawClock6(tContext *pContext)
   uint8_t hour = _hour0;
   uint8_t month, day;
   char buf[20];
-
+  drawTopIcons(pContext);
   rtc_readdate(&year, &month, &day, NULL);
 
   tRectangle rect = {30, 26, LCD_WIDTH - 30, LCD_Y_SIZE - 37};
@@ -303,7 +356,7 @@ static void drawClock7(tContext *pContext)
   uint8_t month, day;
   uint8_t ispm = 0;
   char buf[20];
-
+  drawTopIcons(pContext);
   rtc_readdate(&year, &month, &day, NULL);
 
   // draw time
@@ -350,7 +403,7 @@ static void drawClock9(tContext *pContext)
   uint8_t hour = _hour0;
   uint8_t month, day;
   char buf[20];
-
+  drawTopIcons(pContext);
   /*	  int julian = getDayOfYear(myDate)  // Jan 1 = 1, Jan 2 = 2, etc...
       int dow = _weekday     // Sun = 0, Mon = 1, etc...
       int dowJan1 = getDayOfWeek("1/1/" + thisYear)   // find out first of year's day
