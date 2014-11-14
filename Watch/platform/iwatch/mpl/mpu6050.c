@@ -265,7 +265,8 @@ PROCESS_THREAD(mpu6050_process, ev, data)
                     //We are shaking
                     _shaking = 1;
                     _shakeCount = 0;
-                    process_post(ui_process, EVENT_KEY_PRESSED, (void*)KEY_TAP);
+                    printf ("gesturemotion\n");
+                    process_post(ui_process, EVENT_GESTURE_MATCHED, (void*)KEY_TAP);
                   }
                   else if (CheckForShake(last, accel, ShakeThreshold))
                   {

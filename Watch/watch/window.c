@@ -14,6 +14,7 @@
 PROCESS(system_process, "UI process");
 AUTOSTART_PROCESSES(&system_process);
 
+#define FWVERSION hwp.1.0
 #define WINDOW_FLAGS_REFRESH            1
 #define WINDOW_FLAGS_STATUSUPDATE       2
 
@@ -253,7 +254,8 @@ static void window_handle_event(uint8_t ev, void* data)
     }
     else if (ev == EVENT_KEY_PRESSED || ev == EVENT_KEY_LONGPRESSED)
     {
-      backlight_on(window_readconfig()->light_level, CLOCK_SECOND * 3);
+     // printf ("Crida a backlight_on en window.c ev=%x  %d\n",ev,ev);
+    	backlight_on(window_readconfig()->light_level, CLOCK_SECOND * 3);
 
 
       if (ev == EVENT_KEY_PRESSED && (uint16_t)data == KEY_EXIT)

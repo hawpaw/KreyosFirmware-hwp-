@@ -39,7 +39,10 @@ void light_stop(void *ptr)
 
 void backlight_on(uint8_t level, clock_time_t length)
 {
-  if (level > 8) level = 8;
+
+	//printf("void backlight_on function with time %d\n",length);
+
+	if (level > 8) level = 8;
 
   level *= 2;
   if (level == 0)

@@ -99,8 +99,8 @@ void gesture_init(int8_t _recording, uint8_t leftorright)
     gestureoffset = 0;
   }
   
- // mpu_switchmode(1); desactivem gestures
-  mpu_switchmode(2);
+  mpu_switchmode(1);
+
 }
 
 static uint16_t Dist(const int8_t* p1, const int8_t *p2)
@@ -294,9 +294,9 @@ void gesture_processdata(int16_t *input)
 void gesture_shutdown()
 {
   state = STATE_NONE;
-  mpu_switchmode(2);   // 2: sleep
 
-  //mpu_switchmode(0);  // 0 ==> pedometer
+
+  mpu_switchmode(0);  // 0 ==> pedometer
 
 
   if (distances)

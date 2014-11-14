@@ -1,4 +1,21 @@
-hawpaw update at 28-10-2014
+firmware hawpaw update at 14-11-2014
+________________________________________________________________________________________________-
+-Calendar
+	- week of year ( US and EU based)
+
+-Backlight
+	-Desactivated when kreyos is shaked.
+
+-Mini icon battery
+	-Visible in all watch faces
+
+-Analog watch faces
+	-Visible month and day in all analog watch faces
+	 P)(month visualization issue pending to be fixed, it fixes jumping to calendar)
+
+
+
+firmware hawpaw update at 28-10-2014
 ________________________________________________________________________________________________-
 -Menu: Added option in settings "Date Format" to select US or EU setup
 	EU: 	Weeks start on Monday in calendar

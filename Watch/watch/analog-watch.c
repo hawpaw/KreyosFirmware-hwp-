@@ -40,6 +40,12 @@ extern void check_battery();
 typedef void (*draw_function)(tContext *pContext);
 static void drawTopIcons (tContext* pContext)
 {
+	char buf[8];
+	uint8_t month, day;
+	uint16_t year;
+	rtc_readdate(&year, &month, &day, NULL);
+
+
 	check_battery();
 		GrContextForegroundSet(pContext, ClrWhite);
 		//GrLineDrawH(pContext, 0, LCD_WIDTH, 16);
@@ -75,6 +81,35 @@ static void drawTopIcons (tContext* pContext)
 	    {
 	      GrStringDraw(pContext, &icon, 1, 127, 0, 0);
 	    }
+
+	    rtc_readdate(NULL, &month, &day, NULL);
+	  //Date on all analog faces
+	    	    GrContextFontSet(pContext, &g_sFontNimbus30);
+	    //------------------------------------------------------------------------------------------
+	     // European - US format
+	     	  	  if (window_readconfig()->date_format==0)	//European config	//European config
+	   		  {
+	     	  		sprintf(buf, "%d", day);
+	     	  		GrStringDrawCentered(pContext, buf, -1, 20, 150, 0);
+
+	     	  		sprintf(buf, "%d", month);
+	     	  		GrStringDrawCentered(pContext, buf, -1, 125, 150, 120);
+	   		  }
+	   		  else																//US config
+	   		  {
+	   			  	  sprintf(buf, "%d", month);
+	   				 GrStringDrawCentered(pContext, buf, -1, 20, 150, 0);
+
+	   				  sprintf(buf, "%d", day);
+	   				  GrStringDrawCentered(pContext, buf, -1, 125, 150, 120);
+	   		  }
+	     //------------------------------------------------------------------------------------------
+
+
+
+
+	  //  sprintf(buf, "%d-%d", day,month);
+	   // GrStringDrawCentered(pContext, buf, -1, LCD_WIDTH/2, (LCD_Y_SIZE/2)+20,0);
 
 }
 static void drawFace0(tContext *pContext)

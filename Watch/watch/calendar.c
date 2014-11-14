@@ -10,22 +10,43 @@
 uint8_t month, now_month, day, now_day,today_week;
 uint16_t year, now_year;
 
+
+
 int getWeek() {
-    time_t rawtime;
-    struct tm * timeinfo;
-    char buffer[4];
+    uint16_t daysUpToday;
+    uint8_t mes;
+    uint8_t setmana;
+    uint8_t DayOffset;
+    uint8_t US_EU_adjust=0;
 
-    time (&rawtime);
-    timeinfo = localtime(&rawtime); //
+    ////////////////////////////////////////
+    ////////// read all the months to get all the max days
+    daysUpToday=0;
+    if (window_readconfig()->date_format!=0)	//USA config add one day
+       	  {
+    			US_EU_adjust=1;
+       	  }
+
+    for(mes = 1; mes < now_month; mes++)
+    {
+    	daysUpToday+=rtc_getmaxday(year, mes);
+    	//printf("days=>%i (%i,%i)\n",daysUpToday,mes,year);
+    }
 
 
-   // strftime(buffer,2,"%x - %I:%M%p", timeinfo);
-  //  printf("Formatted date & time : |%s|\n", buffer );
 
-    strftime (buffer,4,"%W",timeinfo);   // '%W' = week number of the year, eg 1/1/09 == 1
-  //  printf("Dins de funcio, bufffer=%s\n",buffer);
+    DayOffset=rtc_getweekday(year, 1, 1) - 1-US_EU_adjust; // use 0 as index  Europe
+    setmana=1+(daysUpToday+now_day+DayOffset)/7;
 
-    return(atoi(buffer));     // convert char to int
+    printf("Dayoffset %d\n", DayOffset);
+
+    if ((US_EU_adjust+DayOffset)>4) {	// For start week short ==>w53
+    	setmana=setmana-1;
+    	if (setmana==0) {setmana=53;}
+    }
+
+    printf("daysUpToday %i,DayOffset %i,now_day %i\n",daysUpToday,DayOffset,now_day);
+    return(setmana);
 }
 
 static void OnDraw(tContext *pContext)
@@ -139,16 +160,16 @@ static void OnDraw(tContext *pContext)
 
   today_week=getWeek();
 
-  sprintf(buf, " %s","");
+  sprintf(buf, "Week: %d",today_week);
 
 
-  printf("week: %i",today_week);
+  //printf("week: %i",today_week);
 
 
   GrContextFontSet(pContext, &g_sFontGothic18);
   GrContextForegroundSet(pContext, ClrWhite);
   GrContextBackgroundSet(pContext, ClrBlack);
-  GrStringDrawCentered( pContext, buf, -1, 85, 150, 0);
+  GrStringDrawCentered( pContext, buf, -1, 110, 150, 0);
 
 }
 

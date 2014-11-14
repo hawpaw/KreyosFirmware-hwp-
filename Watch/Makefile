@@ -6,7 +6,7 @@ LIB     = $(IARPATH)/bin/xlib.exe
 ECHO	= echo
 
 BUILDNUM = buildnum
-FWVERSION ="2.0.0.$$(cat $(BUILDNUM))"
+FWVERSION ="hawpaw.$$(cat $(BUILDNUM))"
 
 IGNORE_WARNINGS=Pa050
 
